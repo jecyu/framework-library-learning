@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FancyCounter</title>
+  <script>
+    var dojoConfig = {
+      async: true,
+      parseOnLoad: false,
+    };
+  </script>
+  <script src="/assets/dojo/dojo.js">
+  </script>
+  <script>
+    require([
+      'dojo/_base/declare',
+      'dojo/parser',
+      'dojo/ready',
+      'dijit/_WidgetBase',
+      'dijit/_TemplatedMixin',
+      'dojo/domReady!'], function (declare, parser, ready, _WidgetBase, _TemplatedMixin) {
+        declare('FancyCounter', [_WidgetBase, _TemplatedMixin], {
+          // counter
+          _i: 0,
+
+          // label: String
+          // Button label
+          label: 'push me',
+
+          templateString: '<div>' +
+            '<button data-dojo-attach-event="onclick: increment">press me</button>' +
+            '&nbsp; count: <span data-dojo-attach-point="counter">0</span>' +
+            '</div>',
+
+          increment: function () {
+            this.counter.innerHTML = ++this._i;
+          }
+        });
+
+        ready(function () {
+          // Call the parser mannually so it runs after our widget is defined, and page has finished loading
+          parser.parse();
+        });
+      });
+  </script>
+</head>
+
+<body>
+  <h1>FancyCounter</h1>
+  <hr>
+  <span data-dojo-type="FancyCounter">press me</span>
+</body>
+
+</html>

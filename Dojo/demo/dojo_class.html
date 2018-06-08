@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Creating Classes</title>
+  <script>
+    var dojoConfig = {
+      async: true,
+      packages: [{
+        name: 'my',
+        location: location.pathname.replace(/\/[^/]*$/, '') + '/my'
+      }]
+    };
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js">
+  </script>
+  <script>
+    require(['my/Person', 'my/Employee', 'my/Boss', 'my/Blizzard', 'dojo/domReady!'],
+      function (Person, Employee, Boss, Blizzard) {
+        // Creating Classes
+        var linjy = new Person({ name: 'linjy', age: 24, residence: 'Guangzhou' });
+        var alice = new Person();
+
+        console.log(alice.name, linjy.name);
+        console.log(alice.residence, linjy.residence);
+        linjy.moveTo('Shanghai');
+        console.log(linjy.residence);
+
+        // Single Inheritance
+        var dog = new Boss({ name: 'dog', age: 26, residence: 'Hanzhou', salary: 9000 });
+        var cat = new Employee({ name: 'cat', age: 33, residence: 'Shenzhen', salary: 1000 });
+        console.log(dog.askForRaise(), cat.askForRaise());
+
+        // Mutiple Inheritance
+        var yummyTreat = new Blizzard();
+      }
+
+    );
+
+
+  </script>
+</head>
+
+<body>
+  <h1>Creating Classes</h1>
+  <hr>
+</body>
+
+</html>

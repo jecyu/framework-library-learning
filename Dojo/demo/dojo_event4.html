@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Publish/Subscribe</title>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js" data-dojo-config="async: true">
+  </script>
+  <script>
+    require(['dojo/on', 'dojo/topic', 'dojo/dom-construct', 'dojo/dom', 'dojo/domReady!'],
+      function (on, topic, domConstruct, dom) {
+        var alertButton = dom.byId('alertButton');
+        var createAlert = dom.byId('createAlert');
+
+        on(alertButton, 'click', function () {
+          // When this button is clicked,
+          // publish to the 'alertUser' topic
+          topic.publish('alertUser', 'I am alerting you.');
+        });
+
+        on(createAlert, 'click', function () {
+          // Create another button
+          var anotherButton = domConstruct.create('button', {
+            innerHTML: 'Another alert button'
+          }, createAlert, 'after');
+
+
+          // When the other button is clicked,
+          // publish to the "alertUser" topic
+          on(anotherButton, 'click', function () {
+            topic.publish('alertUser', 'I am also alerting you.');
+          });
+        });
+
+
+
+        // Register the alerting routine with the "alertUser" topic.
+        topic.subscribe('alertUser', function (text) {
+          alert(text);
+        });
+      }
+    );
+
+  </script>
+</head>
+
+<body>
+  <h1>Publish/Subscribe</h1>
+  <hr>
+  <button id="alertButton">Alert the user</button>
+  <button id="createAlert">Create another alert button</button>
+</body>
+
+</html>

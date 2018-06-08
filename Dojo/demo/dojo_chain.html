@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chaining</title>
+  <script>
+    var dojoConfig = {
+      async: true
+    };
+  </script>
+  <script src="/assets/dojo/dojo.js">
+  </script>
+  <script>
+    require(['dojo/_base/declare', 'dojo/dom-construct', 'dojo/_base/window', 'dojo/domReady!'],
+      function (declare, domConstruct, win) {
+        var A = declare(null, {
+          '-chains-': {
+            init: 'after',
+            destroy: 'before'
+          },
+
+          init: function (token) {
+            this.initialized = true;
+            this.token = token;
+            this.node = domConstruct.create('div', null, win.body());
+            console.log('A.init');
+          },
+
+          destroy: function () {
+            domConstruct.destroy(this.node);
+            this.node = null;
+            console.log('A.destroy');
+          }
+        });
+
+        var B = declare(A, {
+          init: function (token) {
+            console.log('B.init');
+          },
+
+          destroy: function () {
+            console.log('B.destroy');
+          }
+        });
+
+        var x = new B();
+        x.init(42);
+        x.destroy();
+      }
+
+    );
+
+
+  </script>
+</head>
+
+<body>
+  <h1>Chaining</h1>
+  <hr>
+</body>
+
+</html>

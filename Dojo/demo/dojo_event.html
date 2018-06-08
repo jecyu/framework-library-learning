@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Events with Dojo</title>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js" data-dojo-config="async: true">
+  </script>
+  <script>
+    require(['dojo/on', 'dojo/dom', 'dojo/dom-style', 'dojo/mouse', 'dojo/domReady!'],
+      function (on, dom, domStyle, mouse) {
+        var myButton = dom.byId('myButton');
+        var myDiv = dom.byId('myDiv');
+
+        on(myButton, 'click', function (evt) {
+          // Remove this event using the handle or using the on.once() 
+          handle.remove();
+
+          // Do other stuff here that you only want to happen one time 
+          domStyle.set(myDiv, 'backgroundColor', 'blue');
+        });
+
+        on(myDiv, mouse.enter, function (evt) {
+          domStyle.set(myDiv, 'backgroundColor', 'red');
+        });
+
+        on(myDiv, mouse.leave, function (evt) {
+          domStyle.set(myDiv, 'backgroundColor', '');
+        });
+      }
+    );
+  </script>
+</head>
+
+<body>
+  <h1>Events with Dojo</h1>
+  <hr>
+  <button id="myButton">Click me!</button>
+  <div id="myDiv">Hover over me!</div>
+
+  <!-- NodeList Events -->
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Events with Dojo</title>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js" data-dojo-config="async: true">
+  </script>
+  <script>
+    require(['dojo/query', 'dojo/_base/lang', 'dojo/domReady!'],
+      function (query, lang) {
+        var myObject = {
+          id: 'myObject',
+          onClick: function (evt) {
+            alert('The scope of this handler is ' + this.id);
+          }
+        };
+        query('.clickMe').on('click', myObject.onClick);
+        query('.clickMeAlso').on('click', lang.hitch(myObject, 'onClick'));
+      });
+
+  </script>
+</head>
+
+<body>
+  <h1>Events with Dojo</h1>
+  <hr>
+  <!-- NodeList Events -->
+  <button id="button1" class="clickMe">Click me</button>
+  <button id="button2" class="clickMeAlso">Click me also</button>
+  <button id="button3" class="clickMe">Click me too</button>
+  <button id="button4" class="clickMeAlso">Please click me</button>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Dojo Core Example</title>
+  <script>
+    var dojoConfig = {
+      async: true
+    };
+  </script>
+  <script src="/assets/dojo/dojo.js">
+  </script>
+  <script>
+    require(['dojo/dom', 'dojo/date', 'dojo/on', 'dojo/domReady!'],
+      function (dom, date, on) {
+
+        function daysSince(fromDate, target) {
+
+          if (!(fromDate instanceof Date)) {
+            fromDate = new Date(fromDate);
+          }
+          console.log('from Date: ', fromDate);
+          var now = new Date();
+          console.log('From Date', fromDate.toUTCString());
+
+          console.log('Difference in days' + date.difference(fromDate, now, 'day'));
+          var days = date.difference(fromDate, now, 'day');
+          dom.byId(target).innerHTML = days;
+        };
+
+        // 绑定单击事件
+        on(dom.byId('dojoDate'), 'click', function () {
+          daysSince('January 1, 2000 00:00:00', 'outDate');
+        });
+      }
+    );
+  </script>
+</head>
+
+<body>
+  <h1>Dojo Core Example</h1>
+  <hr>
+  <div>
+    <label for="dojoDate">Days since the millenium</label>
+    <span id="outDate"></span>
+    <button id="dojoDate" name="dojoDate" type="button">Calculate dates</button>
+  </div>
+</body>
+
+</html>

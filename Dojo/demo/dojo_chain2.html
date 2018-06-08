@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Manual Constructor Chaining</title>
+  <script>
+    var dojoConfig = {
+      async: true
+    };
+  </script>
+  <script src="/assets/dojo/dojo.js">
+  </script>
+  <script>
+    require(['dojo/_base/declare', 'dojo/dom-construct', 'dojo/_base/window', 'dojo/domReady!'],
+      function (declare, domConstruct, win) {
+        var A = declare(null, {
+          constructor: function () {
+            console.log('A');
+          }
+        });
+
+        var B = declare(A, {
+          // 手动链接
+          '-chains-': {
+            constructor: 'manual'
+          },
+          constructor: function () {
+            console.log('B');
+          }
+        });
+
+        var C = declare(B, {
+          constructor: function () {
+            console.log('C - 1');
+            this.inherited(arguments);
+            console.log('C - 2');
+          }
+        });
+
+        var x = new C();
+      }
+
+    );
+
+
+  </script>
+</head>
+
+<body>
+  <h1>Manual Constructor Chaining</h1>
+  <hr>
+</body>
+
+</html>

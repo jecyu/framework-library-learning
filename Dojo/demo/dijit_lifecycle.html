@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Widget Lifecycle</title>
+  <script>
+    var dojoConfig = {
+      async: true,
+      parseOnLoad: false,
+    };
+  </script>
+  <script src="/assets/dojo/dojo.js">
+  </script>
+  <script>
+    require([
+      'dojo/_base/declare',
+      'dojo/_base/lang',
+      'dojo/dom-construct',
+      'dojo/dom',
+      'dojo/on',
+      'dijit/registry',
+      'dojo/parser',
+      'dojo/ready',
+      'dijit/_WidgetBase',
+      'dojo/domReady!'], function (declare, lang, domConstruct, dom, on, registry, parser, ready, _WidgetBase) {
+        declare('TodoApp', [_WidgetBase], {
+          // 待办事项名称
+          todoName: '',
+
+          // 提醒时间
+          remindTime: '',
+
+          // false 未完成，true 已完成
+          status: false,
+
+          // 被调用时机：在实例化 widget 传入参数之前调用
+          // 用处：初始化数组、对象，覆盖 widget 的默认值
+          constructor: function (/*Object*/args) {
+            lang.mixin(this, args);
+            console.log('1-constructor');
+          },
+
+          // 被调用时机：在 DOM 渲染之前，constructor 实例化参数后
+          // 用处：用于 widget 实例被创建之前，更改实例的属性
+          postMixInProperties: function () {
+            this.todoName = 'postMixInProperties 更改的实例属性值（单击我，可测试 widget 销毁情况）';
+            console.log('2-postMixInProperties');
+          },
+
+          // 被调用时机：在 postMixInProperties 之后
+          // 用处：创建节点，挂载事件，最终结果赋值给 this.domNode
+          buildRendering: function () {
+            // 创建 widget template 片段
+            this.domNode = domConstruct.create('div', { innerHTML: this.todoName });
+
+            console.log('3-buildRendering');
+          },
+
+          // 被调用时机：在已经初始化所有属性后 和 template 添加到 DOM 前，这时实例的 widget已经创建，但是它的 containNode 里的 子 widget 还没有
+          // 用处：自定义 domNode 的样式和行为 
+          postCreate: function () {
+            var domNode = this.domNode;
+            // 如果 widget 被 destroy 销毁后，取消单击事件的绑定
+            this.own(
+              on(domNode, 'click', function () {
+                domConstruct.create('p', {
+                  innerHTML: !status
+                }, domNode);
+                console.log('click')
+              })
+            );
+            console.log('4-postCreate');
+          },
+
+          // 被调用时机：所有的子 widget 已经被解析和创建完成
+          // 用处：widget 布局
+          startup: function () {
+            console.log('5-startup');
+          },
+
+          // 被调用时机：对 widget  使用了destroy() 方法
+          // 用处：销毁 widget
+          destroy: function () {
+            console.log('6-destroy');
+          },
+
+        });
+
+        ready(function () {
+          parser.parse();
+        })
+
+        // 单击按钮，销毁 widget 实例
+        on(dom.byId('destroy'), 'click', function () {
+          registry.byId('TodoApp_0').destroy();
+        });
+      }
+
+
+    );
+  </script>
+</head>
+
+<body>
+  <h1>Widget Lifecycle</h1>
+  <hr>
+  <div data-dojo-type="TodoApp" data-dojo-props="todoName: '这里的值会被 postMixInProperties 更改的属性值覆盖 '">
+  </div>
+  <button id="destroy">destroy widget</button>
+</body>
+
+</html>
