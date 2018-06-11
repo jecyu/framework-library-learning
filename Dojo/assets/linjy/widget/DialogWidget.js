@@ -2,19 +2,22 @@ define([
   'dojo/_base/declare',
   'dojo/dom-style',
   'dojo/dom-construct',
+  'dojo/query',
   'dojo/_base/lang',
   'dojo/on',
-  'dojo/ready',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
-  'dojo/text!./templates/DialogWidget.html'
-], function (declare, domStyle, domConstruct, lang, on, ready, _WidgetBase, _TemplatedMixin, template) {
-  declare('DialogWidget', [_WidgetBase, _TemplatedMixin], {
+  'dojo/text!./templates/DialogWidget.html',
+], function (declare, domStyle, domConstruct, query, lang, on, _WidgetBase, _TemplatedMixin, template) {
+  return declare([_WidgetBase, _TemplatedMixin], {
     templateString: template,
 
     // 设置 dialog 的 tilte
     title: 'This is the Widget Title',
     _setTitleAttr: { node: 'titleNode', type: 'innerHTML' },
+
+    content: '',
+    _setContentAttr: { node: 'containerNode', type: 'innerHTML' },
 
     // widget 的基础类名
     baseClass: 'dialog',
@@ -28,17 +31,26 @@ define([
     // widget 的可见标识
     visiable: false,
 
-    constructor: function (/*Object*/args) {
-      lang.mixin(this, args);
+    constructor: function (propertiesObject, elementId) {
+      lang.mixin(this, propertiesObject, elementId);
     },
 
     postCreate: function () {
       // 调用父类的 postCreate 函数
       this.inherited(arguments);
 
+      // 动态加载 CSS
+      domConstruct.create('link', {
+        rel: 'stylesheet',
+        href: '../assets/linjy/widget/css/DialogWidget.css'
+      }, query('head > title')[0], 'after');
+
+      // 初始化 widget 配置
       this.init();
     },
 
+    startup: function () {
+    },
 
     show: function () {
       this.visiable = true;
@@ -93,6 +105,7 @@ define([
 
       //获取 widget 的根节点
       var domNode = this.domNode;
+
       // 定位对话框
       domStyle.set(domNode, {
         position: 'absolute',
@@ -103,7 +116,7 @@ define([
         transition: this.animateTime + 'ms transform'
       });
 
-      domNode.parentNode.removeChild(domNode);
+      // domNode.parentNode.removeChild(domNode);
       domConstruct.place(domNode, this.maskEle, 'last');
 
       // 绑定事件

@@ -1,0 +1,17 @@
+.dialog {
+  min-width: 500px;
+  min-height: 300px;
+  background: #fff;
+}
+
+.dialogHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.dialogBody {
+  text-align: justify;
+  padding: 10px;
+}

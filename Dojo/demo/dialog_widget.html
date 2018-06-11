@@ -6,31 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dialog Widget</title>
-  <style>
-    .dialog {
-      width: 500px;
-      min-height: 300px;
-      background: #fff;
-    }
-
-    .dialogHeader {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px;
-      border-bottom: 1px solid gray;
-    }
-
-    .dialogBody p {
-      text-align: justify;
-      padding: 10px;
-    }
-
-    .dialogManipulate {
-      overflow: hidden;
-      padding: 10px;
-      border-top: 1px solid gray;
-    }
-  </style>
   <script>
     var dojoConfig = {
       async: true,
@@ -52,32 +27,9 @@
       'linjy/widget/DialogWidget',
       'dojo/ready',
       'dojo/domReady!'], function (dom, query, on, registry, parser, DialogWidget, ready) {
-
-        on(dom.byId('showDialog'), 'click', showDialog);
-        on(query('.closeDialog'), 'click', hideDialog);
-
-        // 显示对话框
-        function showDialog() {
-          registry.byId('dialog').show();
-        }
-
-        // 隐藏对话框
-        function hideDialog() {
-          registry.byId('dialog').hide();
-        }
         ready(function () {
-          parser.parse();
-        })
-      });
-  </script>
-</head>
 
-<body>
-  <h1>Dialog Widget</h1>
-  <hr>
-  <button id="showDialog" type="button">Click Me!</button>
-  <div id="dialog" data-dojo-type="DialogWidget" data-dojo-props="title: 'Dialog Title', animateTime: 500">
-    <div>
+          var contentHtml = `<div>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed suscipit massa. Aenean vel turpis tincidunt velit
         gravida venenatis. In iaculis urna non quam tincidunt elementum. Nunc pellentesque aliquam dui, ac facilisis massa
         sollicitudin et. Donec tincidunt vulputate ultrices. Duis eu risus ut ipsum auctor scelerisque non quis ante. Nam
@@ -88,8 +40,38 @@
     <div class="dialogManipulate">
       <button type="button" class="closeDialog">Close</button>
       <button type="button">Save changes</button>
-    </div>
-  </div>
+    </div>`;
+
+
+          // 实例化 dialog widget
+          var dialog = new DialogWidget({
+            title: '命令式写法',
+            content: contentHtml,
+          });
+          dialog.startup();
+
+          on(dom.byId('myButton'), 'click', showDialog);
+          on(query('.closeDialog'), 'click', hideDialog);
+
+          // 显示对话框
+          function showDialog() {
+            dialog.show();
+          }
+
+          // 隐藏对话框
+          function hideDialog() {
+            dialog.hide();
+          }
+        });
+      });
+  </script>
+</head>
+
+<body>
+  <h1>Dialog Widget</h1>
+  <hr>
+  <button id="myButton" type="button">Click Me!</button>
+
 </body>
 
 </html>
