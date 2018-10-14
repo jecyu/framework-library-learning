@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实时显示当前时间</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>实时显示当前时间</h1>
+  <hr>
+  <div id="app">
+    {{ date }}
+  </div>
+  <script type="text/javascript">
+    var app = new Vue({
+      el: '#app',
+      data: {
+        date: new Date()
+      },
+      mounted: function () {
+        // 声明一个变量指向 Vue 实例 this，保证作用域一致
+        var _this = this;
+        this.timer = setInterval(function () {
+          // 修改数据 date
+          _this.date = new Date();
+        }, 1000);
+      },
+      beforeDestroy: function () {
+        if (this.timer) {
+          // 在 Vue 实例销毁前，清除我们的定时器
+          clearInterval(this.timer);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

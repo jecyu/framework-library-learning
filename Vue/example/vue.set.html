@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue.set 实例</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>Vue.set 实例</h1>
+  <hr>
+  <div id="app">
+    {{count}}
+    <ul>
+      <li v-for="item in arr">{{item}}</li>
+    </ul>
+  </div>
+  <p>
+    <button onClick="add()">add</button>
+  </p>
+  <script type="text/javascript">
+    function add() {
+      // Vue.set(outDate, 'count', 2);
+      // app.count++;
+      // outDate++;
+      app.arr[1] = 'ddd'; // Vue 无法检测改变
+      Vue.set(app.arr, 1, 'dd');
+    }
+    var outDate = {
+      count: 1,
+      // goods: "car"
+      arr: ['aaa', 'bbb', 'ccc']
+    }
+    var app = new Vue({
+      el: '#app',
+      data: outDate
+    })
+  </script>
+</body>
+
+</html>

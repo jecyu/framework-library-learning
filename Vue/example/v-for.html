@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>列表渲染指令 v-for</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>列表渲染指令 v-for</h1>
+  <hr>
+  <div id="app">
+    <ul>
+      <template v-for="(book, index) in sortedBooks">
+        <li>书名：{{ index + 1 }} - {{ book.name }}</li>
+        <li>作者：{{ book.author }}</li>
+      </template>
+    </ul>
+  </div>
+  <script type="text/javascript">
+    var app = new Vue({
+      el: '#app',
+      data: {
+        books: [
+          {
+            name: '《Vue.js 实战》',
+            author: '梁灏'
+          },
+          {
+            name: '《Javascript 语言精粹》',
+            author: 'Douglas Crockford'
+          },
+          {
+            name: '《JavaScript 高级程序设计》',
+            author: 'Nicholas C.Zakas'
+          }
+        ]
+      },
+      computed: {
+        filterBooks: function () {
+          return this.books.filter(function (book) {
+            return book.name.match(/JavaScript/);
+          });
+        },
+        sortedBooks: function () {
+          return this.books.sort(function (a, b) {
+            // console.log(a, b);
+            return a.name.length < b.name.length;
+          });
+        }
+      }
+    });
+    // app.books.push({
+    //   name: '《CSS 揭秘》',
+    //   author: '[希] Lea Verou'
+    // });
+   
+  </script>
+</body>
+
+</html>

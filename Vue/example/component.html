@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Component 组件</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>Component 组件</h1>
+  <hr>
+  <div id="app">
+    <my-component></my-component>
+    <my-component></my-component>
+    <my-component></my-component>
+  </div>
+  <script type="text/javascript">
+    var data = {
+      counter: 0
+    };
+
+    Vue.component('my-component', {
+      template: '<button @click="counter++">{{ counter }}</button>',
+      data: function () {
+        // 三个组件实例引用的都是外部的 data 对象，任何一方修改都会同步修改
+        // return data;
+        // 实例组件时，返回一个新的对象
+        return {
+          counter: 0
+        };
+      }
+    });
+
+    var app = new Vue({
+      el: '#app',
+    });
+  </script>
+</body>
+
+</html>

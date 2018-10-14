@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>使用 slot 分发内容</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>使用 slot 分发内容</h1>
+  <hr>
+  <div id="app">
+    <my-list :books="books">
+      <!-- 作用域插槽也可以是具名的 Slot -->
+      <template slot="book" slot-scope="props">
+        <li>{{ props.bookName }}</li>
+      </template>
+    </my-list>
+  </div>
+  <script type="text/javascript">
+    // 定义子组件
+    Vue.component('my-list', {
+      props: {
+        books: {
+          type: Array,
+          default: function () {
+            return [];
+          }
+        }
+      },
+      template: '\
+        <ul>\
+          <slot name="book" v-for="book in books" :book-name="book.name">\
+          </slot>\
+        </ul>',
+    });
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        books: [
+          { name: '《Vue.js 实战》' },
+          { name: '《JavaScript 语言精粹》' },
+          { name: '《JavaScript 高级程序设计》' }
+        ]
+      }
+    });
+  </script>
+</body>
+
+</html>

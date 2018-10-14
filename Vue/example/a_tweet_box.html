@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A Tweet Box</title>
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css" />
+  <style>
+    button[disable] {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .hide {
+      overflow: hidden;
+      position: absolute !important;
+
+      width: 1px;
+      height: 1px;
+      clip: rect(1px, 1px, 1px, 1px);
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center vh-100">
+  <div id="twitterVue" class="w-75 center ba b--black-10">
+    <button @click="showModal">Compose Tweet</button>
+    <transition name="modal-transition" v-on:enter="modalEnter" v-on:leave="modalLeave">
+      <div v-if="modalShowing">
+        <div class="pv2 tc bb b--black-10">
+          <h1 class="ma0 f5 normal">Compose New Tweet</h1>
+        </div>
+        <div class="bg-near-white pa3">
+          <textarea v-model="tweet" name="tweet" rows="3" class="w-100 br2 ba b--black-10 pa2" placeholder="Write your tweet here"></textarea>
+          <div v-if="photoHasBeenUploaded" class="bg-black-10 pa2 flex">
+            <figure v-for="(photo, index) in photos">
+              <button @click="removePhoto(index)">x</button>
+              <img v-bind:src="photo" class="h3 w3" alt="Uploaded photo">
+            </figure>
+          </div>
+          <button @click="triggerFileUpload">...</button>
+          <input multiple ref="photoUpload" @change="handlePhotoUpload" type="file" class="hide">
+          <div class="mt3 tr">
+            <span v-bind:class="{'dark-red': underTwentyMark, 'light-red': underTenMark}" class="mr3 black-70">{{ charactersRemaining }}</span>
+            <button :disable="tweetIsOutOfRange" class="button-reset bg-blue bn white f6 fw5 pv2 ph3 br2 pointer dim">Tweet</button>
+          </div>
+        </div>
+        <p>The value of
+          <strong>tweet </strong>is: {{tweet}}</p>
+        <p>The value of
+          <strong>tweetIsEmpty </strong>is: {{tweetIsOutOfRange}}</p>
+      </div>
+    </transition>
+
+
+  </div>
+
+  <script src="../assets/js/vue.js"></script>
+  <script>
+    const MAX_TWEET_LENGTH = 140;
+    new Vue({
+      el: '#twitterVue',
+      data: {
+        tweet: '',
+        photos: [],
+        modalShowing: false
+      },
+      computed: {
+        tweetIsOutOfRange: function () {
+          return this.tweet.length === 0 || this.charactersRemaining < 0;
+        },
+        charactersRemaining: function () {
+          return MAX_TWEET_LENGTH - this.tweet.length
+        },
+        underTwentyMark: function () {
+          return this.charactersRemaining <= 20 && this.charactersRemaining > 10;
+        },
+        underTenMark: function () {
+          return this.charactersRemaining <= 10;
+        },
+        photoHasBeenUploaded: function () {
+          return this.photos.length > 0;
+        }
+      },
+      methods: {
+        triggerFileUpload: function () {
+          this.$refs.photoUpload.click();
+        },
+        // 上传照片 
+        handlePhotoUpload: function (e) {
+          var self = this;
+          // 选择的文件列表
+          var files = e.target.files;
+          console.log(e.target.files);
+
+          for (let i = 0; i < files.length; i++) {
+            let reader = new FileReader();
+            reader.onload = function (evt) {
+              // Set the base 64 string to our data model's 'photo' key
+              self.photos.push(evt.target.result);
+            }
+            // Read Upload file as base 64 string
+            reader.readAsDataURL(files[i]);
+          }
+        },
+
+        // 移除照片
+        removePhoto: function (index) {
+          this.photos.splice(index, 1);
+        },
+
+
+        modalEnter: function (el, done) {
+          // Velocity(el, 'fadeIn', { duration: 300, complete: done, display: 'flex' })
+        },
+
+        modalLeave: function (el, done) {
+          // 版本更改了
+          // Velocity(el, 'fadeOut', { duration: 300, complete: done })
+        },
+
+        hideModal: function () {
+          this.modalShowing = false;
+        },
+
+        showModal: function () {
+          this.modalShowing = true;
+        }
+
+      }
+    })
+  </script>
+</body>
+
+</html>

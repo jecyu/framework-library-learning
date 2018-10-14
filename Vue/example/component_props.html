@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Component 组件</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>Component 组件</h1>
+  <hr>
+  <div id="app">
+    <child message="hello!"></child>
+    <br>
+    <input type="text" v-model="parentMsg">
+    <br>
+    <child2 :my-message="parentMsg"></child2>
+  </div>
+  <script type="text/javascript">
+    // 父子组件通信
+    Vue.component('child', {
+      // 声明 props
+      props: ['message'],
+      template: '<span>{{ message }}</span>'
+    });
+
+    Vue.component('child2', {
+      // 动态 props
+      props: ['myMessage'],
+      template: '<span>{{ myMessage }}</span>'
+    });
+
+    // 根元素 Vue 实例化 
+    var app = new Vue({
+      el: '#app',
+      data: {
+        parentMsg: 'Message from parent'
+      }
+    });
+
+  </script>
+</body>
+
+</html>

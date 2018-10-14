@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>computed 计算属性</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>computed option</h1>
+  <hr>
+  <div id="app">
+    <p>
+      {{newPrice}}
+    </p>
+    <ul>
+      <li v-for="item in reverNews">{{item.title}}--{{item.date}}</li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+    var newsList = [{
+        title: '20年前杀人强奸、16年前嫖娼灭口，这两起命案最近都破了。',
+        date: '2018/03/10'
+      },
+      {
+        title: '蓬佩奥:感谢特朗普提名国务卿 他领导使美更安全',
+        date: '2018/03/11'
+      },
+      {
+        title: '中新网3月14日电 据外媒报道，英国著名物理学奖史蒂芬·霍金去世，享年76岁。',
+        date: '2018/03/12'
+      },
+      {
+        title: '霍金子女声明：深感悲痛 父亲的影响将持续多年',
+        date: '2018/03/14'
+      }
+    ];
+    var app = new Vue({
+      el: '#app',
+      data: {
+        price: '100',
+        newsList: newsList
+      },
+      computed: {
+        newPrice: function () {
+          return '￥' + this.price + '元'
+        },
+        reverNews: function () {
+          return this.newsList.reverse()
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

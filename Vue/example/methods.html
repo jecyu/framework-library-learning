@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>methods option</title>
+  <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+
+<body>
+  <h1>methods option</h1>
+  <hr>
+  <div id="app">
+    本场比赛得分：{{score}}
+    <p>
+      <!-- 使用 $event 用于交互性比较强的场景 -->
+      <button v-on:click="addScore(2,$event)">加分</button>
+    </p>
+    <p>
+      <!-- 需要 native 修饰符来使用组件内部的方法 -->
+      <btn v-on:click.native="addScore(2)"></btn>
+    </p>
+  </div>
+  <!-- 外部调用 vue 内部方法 -->
+  <button onclick="app.addScore(3)">外部ADD</button>
+  <script type="text/javascript">
+    var btn = {
+      template: `<button>组件ADD</button>`
+    }
+    var app = new Vue({
+      el: '#app',
+      data: {
+        score: 0,
+      },
+      components: {
+        'btn': btn
+      },
+      methods: {
+        addScore: function (num, event) {
+          console.log(event);
+          if (num != '') {
+            this.score += num;
+          } else {
+            this.score++;
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
