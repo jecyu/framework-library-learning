@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>事件订阅发布</title>
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+  </head>
+
+  <body>
+    <h1>事件订阅发布</h1>
+    <hr />
+    <div id="app">
+      <child @on-change="handleChange($event, '测试')"></child>
+      <!-- 可以在这里传递多个值 -->
+    </div>
+    <script type="text/javascript">
+      // 1. 测试订阅发布可以传递多个参数
+      Vue.component("child", {
+        template: '<button @click="counter++">{{ counter }}</button>',
+        data() {
+          return {
+            counter: 0
+          };
+        },
+        watch: {
+          counter(v) {
+            this.$emit("on-change", v, "emit2"); // 无法 emit 多个值，待使用 render 测试，替代方案传递一个对象
+          }
+        }
+      });
+
+      const app = new Vue({
+        el: "#app",
+        data: {},
+        methods: {
+          handleChange(v1, v2) {
+            console.log(v1, v2);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
