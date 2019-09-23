@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>方法三、$attrs-$listeners</title>
+    <script type="text/javascript" src="../../assets/js/vue.js"></script>
+  </head>
+
+  <body>
+    <h1>方法三、$attrs-$listeners</h1>
+    <hr />
+    <div id="app">
+      <h2>花森煜米</h2>
+      <Child1
+        :foo="foo"
+        :boo="boo"
+        :coo="coo"
+        title="前端点掂"
+        name="happy"
+        class="hightlight"
+      ></Child1>
+    </div>
+    <script type="text/javascript">
+      // import Child1 from "./Child1.js";
+      // 多级组件嵌套需要传递数据时，通常使用的方法是通过vuex。但如果仅仅是传递数据，而不做中间处理，则可以使用  $attrs-$listeners
+      // 适用于二次封装组件，嵌套层级比较深组件数据传递时，父➡子➡孙
+      // $attrs：包含了父作用域中不被 prop 所识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind="$attrs" 传入内部组件。通常配合 inheritAttrs 选项一起使用。
+      // $listeners：包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on="$listeners" 传入内部组件
+
+      const Child3 = {
+        template: `
+              <div class="border">
+                <p>coo: {{ coo }}</p>
+                <p>Child3: {{ $attrs }}</p>
+              </div>`,
+        name: "Child3",
+        inheritAttrs: true, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+        // inheritAttrs：false，组件将不会把未被注册的props呈现为普通的HTML属性，注意渲染后的 title 属性是否被挂载
+        props: {
+          coo: {
+            type: String,
+            default: ""
+          }
+        },
+        data() {
+          return {};
+        },
+        created() {
+          console.log(this.$attrs);
+        }
+      };
+      const Child2 = {
+        template: `
+              <div class="border">
+                <p>boo: {{ boo }}</p>
+                <p>Child2: {{ $attrs }}</p>
+                <Child3 v-bind="$attrs"></Child3>
+              </div>`,
+        name: "Child2",
+        components: {
+          Child3
+        },
+        inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+        props: {
+          boo: {
+            type: String,
+            default: ""
+          }
+        },
+        data() {
+          return {};
+        },
+        created() {
+          console.log(this.$attrs);
+        }
+      };
+
+      const Child1 = {
+        template: `
+              <div class="border">
+                <p>foo: {{ foo }}</p>
+                <p>Child1的$attrs: {{ $attrs }}</p>
+                <Child2 v-bind="$attrs"></Child2>
+              </div>`,
+        name: "Child1",
+        inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+        components: {
+          Child2
+        },
+        props: {
+          foo: {
+            type: String,
+            default: ""
+          }
+        },
+        data() {
+          return {};
+        }
+      };
+
+      const app = new Vue({
+        el: "#app",
+        components: {
+          Child1
+        },
+        data: {
+          foo: "JavaScript",
+          boo: "Html",
+          coo: "CSS",
+          doo: "Vue"
+        },
+        methods: {} //
+      });
+    </script>
+  </body>
+</html>

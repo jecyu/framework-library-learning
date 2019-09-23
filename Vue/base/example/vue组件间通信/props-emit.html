@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>方法一、props/$emit</title>
+    <script type="text/javascript" src="../../assets/js/vue.js"></script>
+  </head>
+
+  <body>
+    <h1>方法一、props/$emit</h1>
+    <hr />
+    <div id="app">
+      <users :users="users" @item-clicked="handleitemClicked"> </users>
+    </div>
+    <script type="text/javascript">
+      // 定义子组件
+      Vue.component("users", {
+        name: "users",
+        props: {
+          // 父组件通过props向下传递数据给子组件。注：组件中的数据共有三种形式：data、props、computed
+          users: {
+            type: Array,
+            required: true
+          }
+        },
+        template: `<div class="hello">
+          <ul>
+            <li v-for="(user, index) in users" @click="handleItemClick(user)" :key="index">{{ user }}</li>
+          </ul>
+        </div>`,
+        methods: {
+          handleItemClick(item) {
+            this.$emit("item-clicked", item); // 子组件通过events给父组件发送消息，实际上就是子组件把自己的数据发送到父组件。
+          }
+        }
+      });
+
+      var app = new Vue({
+        el: "#app",
+        data: {
+          users: ["Henry", "Bucky", "Emily"]
+        },
+        methods: {
+          handleitemClicked(item) {
+            console.log(item);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

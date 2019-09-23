@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Vue 中数组和对象更改后视图不刷新的问题</title>
+    <script type="text/javascript" src="../../assets/js/vue.js"></script>
+  </head>
+
+  <body>
+    <h1>Vue 中数组和对象更改后视图不刷新的问题</h1>
+    <hr />
+    <div id="app">
+      <List :listData="persons"></List>
+      <ul>
+        <li v-for="(item, index) in persons" :key="index">{{ item.name }}</li>
+      </ul>
+      <button @click="handleClick">改变数组</button>
+    </div>
+    <script type="text/javascript">
+      Vue.component("List", {
+        template: `<ul>
+            <li v-for="item in listData">{{ item.name }}</li>
+          </ul>`,
+        props: {
+          listData: {
+            type: Array,
+            default: () => []
+          }
+        },
+        data() {
+          return {
+            counter: 0
+          };
+        }
+      });
+
+      const app = new Vue({
+        el: "#app",
+        data: {
+          persons: [
+            {
+              name: "A",
+              age: 18
+            },
+            {
+              name: "B",
+              age: 24
+            }
+          ]
+        },
+        methods: {
+          handleClick() {
+            // 这样直接赋值也可以触发视图，如果是组件的话，就无法触发，VetorData 待处理
+            this.persons = [
+              {
+                name: "C",
+                age: 18
+              },
+              {
+                name: "D",
+                age: 24
+              },
+              {
+                name: "E",
+                age: 24
+              }
+            ];
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
